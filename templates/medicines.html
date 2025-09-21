@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}Current Medicines{% endblock %}
+
+{% block content %}
+<h2>Current Medicines</h2>
+
+
+
+<style>
+input[type="date"] {
+  background-color: #1c1c28;   /* dark background */
+  color: #ffffff;              /* white text */
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 0.6rem;
+  font-size: 1rem;
+}
+
+/* calendar picker icon (Webkit browsers like Chrome/Edge/Safari) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);  /* inverts to white */
+  cursor: pointer;
+}
+
+</style>
+<!-- rest of your content -->
+
+<style>
+.mark-taken-btn {
+  background: #a7f3d0;
+  border: none;
+  color: #065f46;
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.mark-taken-btn.taken {
+  background: #d1fae5;
+}
+.remove-btn {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px; /* Adds vertical space between rows */
+}
+
+th, td {
+  padding: 0.75rem 1.5rem; /* Adds horizontal and vertical padding */
+  text-align: left;
+}
+
+th {
+  background: var(--dark-card);
+  color: var(--green);
+  font-size: 1.1rem;
+}
+
+td {
+  background: #232336;
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+
+
+
+
+</style>
+
+
+
+<form method="POST" action="{{ url_for('medicine') }}">
+  <div class="form-group">
+    <label for="name">Medicine Name</label>
+    <input type="text" id="name" name="name" placeholder="Medicine name" required />
+  </div>
+  <div class="form-group">
+    <label for="dosage">Dosage</label>
+    <input type="text" id="dosage" name="dosage" placeholder="e.g. 10mg" required />
+  </div>
+  <div class="form-group">
+    <label for="frequency">Frequency</label>
+    <select id="frequency" name="frequency" required>
+      <option value="" disabled selected>Select frequency</option>
+      <option value="Once a day">Once a day</option>
+      <option value="Twice a day">Twice a day</option>
+      <option value="Thrice a day">Thrice a day</option>
+      <option value="As needed">As needed</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="start_date">Start Date</label>
+    <input type="date" id="start_date" name="start_date" required />
+  </div>
+  <button type="submit" class="btn">Add Medicine</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Dosage</th>
+      <th>Frequency</th>
+      <th>Start Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+
+<tbody>
+  {% for med in medicines %}
+    <tr>
+      <td>{{ med.name }}</td>
+      <td>{{ med.dosage }}</td>
+      <td>{{ med.frequency }}</td>
+      <td>{{ med.start_date.strftime('%Y-%m-%d') if med.start_date else '' }}</td>
+      <td>
+        {% set btn_bg = '#d1fae5' if med.taken else '#a7f3d0' %}
+       <form method="POST" action="{{ url_for('mark_taken', medicine_id=med.id) }}" style="display:inline;">
+  <button type="submit"
+          class="mark-taken-btn{% if med.taken %} taken{% endif %}">
+    {% if med.taken %}
+      ✅ Taken
+    {% else %}
+      Mark Taken
+    {% endif %}
+  </button>
+</form>
+<form method="POST" action="{{ url_for('remove_medicine', medicine_id=med.id) }}" style="display:inline;">
+  <button type="submit" class="remove-btn">
+    Remove
+  </button>
+</form>
+      </td>
+    </tr>
+  {% endfor %}
+</tbody>
+
+
+</table>
+{% endblock %}

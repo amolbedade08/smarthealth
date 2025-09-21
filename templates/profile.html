@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+  <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+    <!-- Profile picture -->
+    <div style="width: 150px; height: 150px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 4px solid var(--green);">
+   <img src="{{ profile.profile_picture_url or url_for('static', filename='images/profile.jpg') }}" alt="Profile Picture"
+     style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover;">
+    </div>
+    <!-- Name + details -->
+    <div style="flex: 1; min-width: 250px;">
+      <h2 style="margin: 0 0 1rem 0; font-size: 1.5rem; color: var(--green);">
+        {{ profile.full_name or "Your Name" }}
+      </h2>
+      <div class="details" style="text-align: left;">
+        <p style="margin: 0.4rem 0; font-size: 1rem; color: var(--text-muted);"><strong style="color: var(--green);">Email:</strong> {{ profile.email or "Not set" }}</p>
+        <p style="margin: 0.4rem 0; font-size: 1rem; color: var(--text-muted);"><strong style="color: var(--green);">Contact:</strong> {{ profile.contact_number or "Not set" }}</p>
+        <p style="margin: 0.4rem 0; font-size: 1rem; color: var(--text-muted);"><strong style="color: var(--green);">Age:</strong> {{ profile.age or "Not set" }}</p>
+        <p style="margin: 0.4rem 0; font-size: 1rem; color: var(--text-muted);"><strong style="color: var(--green);">Gender:</strong> {{ profile.gender or "Not set" }}</p>
+        <p style="margin: 0.4rem 0; font-size: 1rem; color: var(--text-muted);"><strong style="color: var(--green);">Blood Type:</strong> {{ profile.blood_type or "Not set" }}</p>
+        <p style="margin: 0.4rem 0; font-size: 1rem; color: var(--text-muted);"><strong style="color: var(--green);">Height:</strong> {{ profile.height or "Not set" }} cm</p>
+        <p style="margin: 0.4rem 0; font-size: 1rem; color: var(--text-muted);"><strong style="color: var(--green);">Weight:</strong> {{ profile.weight or "Not set" }} kg</p>
+        <p style="margin: 0.4rem 0; font-size: 1rem; color: var(--text-muted);"><strong style="color: var(--green);">Disability:</strong> {{ profile.disability or "None" }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit button -->
+  <div style="text-align: right; margin-top: 1.5rem;">
+    <button id="editProfileBtn" class="edit-btn"
+       style="display: inline-block; padding: 0.6rem 1.2rem; background: var(--green); color: var(--dark-bg); border-radius: 8px; font-weight: 600; transition: background 0.3s ease; border: none; cursor: pointer;">
+       ✏️ Edit Profile
+    </button>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div id="editProfileModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:var(--dark-bg,#222); color:var(--text-muted,#fff); padding:1.5rem; border-radius:18px; max-width:370px; width:92vw; max-height:90vh; box-shadow:0 4px 24px rgba(0,0,0,0.18); position:relative; overflow-y:auto; border:2px solid var(--green);">
+      <h3 style="margin-top:0; color:var(--green); text-align:center; font-size:1.3rem;">Edit Profile</h3>
+      <form method="POST" action="{{ url_for('profile') }}" enctype="multipart/form-data">
+        <div style="margin-bottom:1rem;">
+          <label style="font-weight:600; color:var(--green);">Email:</label>
+          <input type="email" name="email" value="{{ profile.email or '' }}" required style="width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--green); background:var(--light-bg,#f8f8f8); margin-top:0.2rem;">
+        </div>
+        <div style="margin-bottom:1rem;">
+          <label style="font-weight:600; color:var(--green);">Contact:</label>
+          <input type="text" name="contact_number" value="{{ profile.contact_number or '' }}" required style="width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--green); background:var(--light-bg,#f8f8f8); margin-top:0.2rem;">
+        </div>
+        <div style="margin-bottom:1rem; display:flex; gap:1rem;">
+          <div style="flex:1;">
+            <label style="font-weight:600; color:var(--green);">Age:</label>
+            <input type="text" name="age" value="{{ profile.age or '' }}" required style="width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--green); background:var(--light-bg,#f8f8f8); margin-top:0.2rem;">
+          </div>
+          <div style="flex:1;">
+            <label style="font-weight:600; color:var(--green);">Gender:</label>
+            <input type="text" name="gender" value="{{ profile.gender or '' }}" required style="width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--green); background:var(--light-bg,#f8f8f8); margin-top:0.2rem;">
+          </div>
+        </div>
+        <div style="margin-bottom:1rem; display:flex; gap:1rem;">
+          <div style="flex:1;">
+            <label style="font-weight:600; color:var(--green);">Blood Type:</label>
+            <input type="text" name="blood_type" value="{{ profile.blood_type or '' }}" required style="width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--green); background:var(--light-bg,#f8f8f8); margin-top:0.2rem;">
+          </div>
+          <div style="flex:1;">
+            <label style="font-weight:600; color:var(--green);">Disability:</label>
+            <input type="text" name="disability" value="{{ profile.disability or '' }}" style="width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--green); background:var(--light-bg,#f8f8f8); margin-top:0.2rem;">
+          </div>
+        </div>
+        <div style="margin-bottom:1rem; display:flex; gap:1rem;">
+          <div style="flex:1;">
+            <label style="font-weight:600; color:var(--green);">Height (cm):</label>
+            <input type="text" name="height" value="{{ profile.height or '' }}" required style="width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--green); background:var(--light-bg,#f8f8f8); margin-top:0.2rem;">
+          </div>
+          <div style="flex:1;">
+            <label style="font-weight:600; color:var(--green);">Weight (kg):</label>
+            <input type="text" name="weight" value="{{ profile.weight or '' }}" required style="width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--green); background:var(--light-bg,#f8f8f8); margin-top:0.2rem;">
+          </div>
+        </div>
+        <div style="margin-bottom:1rem;">
+          <label style="font-weight:600; color:var(--green);">Profile Picture:</label>
+          <input type="file" name="profile_picture" accept="image/*" style="width:100%; margin-top:0.2rem;">
+        </div>
+        <div style="text-align:right; margin-top:1.2rem;">
+          <button type="button" id="closeModalBtn" style="margin-right:1rem; background:var(--green,#2ecc40); color:var(--dark-bg,#222); border:none; border-radius:8px; padding:0.5rem 1.2rem; font-weight:600; cursor:pointer;">Cancel</button>
+          <button type="submit" style="background:var(--green,#2ecc40); color:var(--dark-bg,#222); border:none; border-radius:8px; padding:0.5rem 1.2rem; font-weight:600; cursor:pointer;">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const editBtn = document.getElementById('editProfileBtn');
+    const modal = document.getElementById('editProfileModal');
+    const closeBtn = document.getElementById('closeModalBtn');
+    editBtn.onclick = function() {
+      modal.style.display = 'flex';
+    };
+    closeBtn.onclick = function() {
+      modal.style.display = 'none';
+    };
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    };
+  </script>
+{% endblock %}

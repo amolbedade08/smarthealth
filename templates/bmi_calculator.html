@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}BMI Calculator{% endblock %}
+
+{% block content %}
+    <h2>⚖️ BMI Calculator</h2>
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="height_cm">Height (cm):</label>
+            <input type="number" id="height_cm" name="height_cm" step="0.1" required>
+        </div>
+        <div class="form-group">
+            <label for="weight_kg">Weight (kg):</label>
+            <input type="number" id="weight_kg" name="weight_kg" step="0.1" required>
+        </div>
+        <button type="submit" class="btn">Calculate & Save BMI</button>
+    </form>
+
+    <div class="table-container">
+        <h3>BMI History</h3>
+        <style>
+          .bmi-table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 2rem;
+          }
+          .bmi-table th, .bmi-table td {
+            padding: 1rem 1.2rem;
+            text-align: left;
+            font-size: 1rem;
+            border-bottom: 1px solid #ffffff;
+            word-break: break-word;
+            background: #000000;
+            color: #fff;
+          }
+          .bmi-table th {
+            background: #686868;
+            font-weight: 700;
+            font-size: 1.08rem;
+            border-bottom: 2px solid #343a40;
+            white-space: nowrap;
+          }
+          .bmi-table td:last-child {
+            white-space: nowrap;
+          }
+          @media (max-width: 900px) {
+            .bmi-table {
+              min-width: 0;
+              font-size: 0.95rem;
+            }
+            .bmi-table th, .bmi-table td {
+              padding: 0.7rem 0.5rem;
+            }
+          }
+        </style>
+        {% if bmi_history %}
+            <table class="bmi-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Date</th>
+                        <th style="width: 20%;">Height (cm)</th>
+                        <th style="width: 20%;">Weight (kg)</th>
+                        <th style="width: 20%;">BMI</th>
+                        <th style="width: 20%;">Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in bmi_history %}
+                        <tr>
+                            <td>{{ entry.date_recorded.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ entry.height_cm }}</td>
+                            <td>{{ entry.weight_kg }}</td>
+                            <td>{{ "%.2f"|format(entry.bmi_value) }}</td>
+                            <td>
+                                {% if entry.bmi_value < 18.5 %}
+                                    Underweight
+                                {% elif entry.bmi_value >= 18.5 and entry.bmi_value < 24.9 %}
+                                    Normal weight
+                                {% elif entry.bmi_value >= 25 and entry.bmi_value < 29.9 %}
+                                    Overweight
+                                {% else %}
+                                    Obesity
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No BMI entries recorded yet.</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

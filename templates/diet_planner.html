@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Diet Planner{% endblock %}
+
+{% block content %}
+    <h2>🥗 Diet Planner</h2>
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="meal_date">Meal Date:</label>
+            <input type="date" id="meal_date" name="meal_date" value="{{ today_date if today_date }}" required>
+        </div>
+        <div class="form-group">
+            <label for="meal_type">Meal Type:</label>
+            <select id="meal_type" name="meal_type" required>
+                <option value="">Select Meal Type</option>
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+                <option value="Snack">Snack</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="food_item">Food Item:</label>
+            <input type="text" id="food_item" name="food_item" placeholder="e.g., Oatmeal with berries" required>
+        </div>
+        <div class="form-group">
+            <label for="calories">Calories (optional):</label>
+            <input type="number" id="calories" name="calories" step="0.1" placeholder="e.g., 300">
+        </div>
+        <button type="submit" class="btn">Add Meal</button>
+    </form>
+
+    <div class="table-container">
+        <h3>Your Meal Plan</h3>
+        <style>
+          .meal-table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 2rem;
+          }
+          .meal-table th, .meal-table td {
+            padding: 1rem 1.2rem;
+            text-align: left;
+            font-size: 1rem;
+            border-bottom: 1px solid #ffffff;
+            word-break: break-word;
+            background: #000000;
+            color: #fff;
+          }
+          .meal-table th {
+            background: #000000;
+            font-weight: 700;
+            font-size: 1.08rem;
+            border-bottom: 2px solid #343a40;
+            white-space: nowrap;
+          }
+          .meal-table td:last-child {
+            white-space: nowrap;
+          }
+          .remove-btn {
+            background: none;
+            border: none;
+            color: red;
+            cursor: pointer;
+            font-weight: 600;
+          }
+          @media (max-width: 900px) {
+            .meal-table {
+              min-width: 0;
+              font-size: 0.95rem;
+            }
+            .meal-table th, .meal-table td {
+              padding: 0.7rem 0.5rem;
+            }
+          }
+        </style>
+        {% if meal_plans %}
+            <table class="meal-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Date</th>
+                        <th style="width: 20%;">Meal Type</th>
+                        <th style="width: 40%;">Food Item</th>
+                        <th style="width: 10%;">Calories</th>
+                        <th style="width: 10%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for meal in meal_plans %}
+                        <tr>
+                            <td>{{ meal.meal_date.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ meal.meal_type }}</td>
+                            <td>{{ meal.food_item }}</td>
+                            <td>{{ "%.1f"|format(meal.calories) if meal.calories else 'N/A' }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('remove_meal', meal_id=meal.id) }}">
+                                    <button type="submit" class="remove-btn">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No meals planned yet. Start by adding one!</p>
+        {% endif %}
+    </div>
+    <script>
+        // Set today's date as default for the date input
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months start at 0!
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('meal_date').value = `${yyyy}-${mm}-${dd}`;
+        });
+    </script>
+{% endblock %}

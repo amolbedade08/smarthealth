@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Health Tips{% endblock %}
+
+{% block content %}
+    <h2>💡 Daily Health Tip</h2>
+    <style>
+        .tip-card {
+            background-color: #e0f2f7; /* Light blue */
+            border: 1px solid #b3e5fc; /* Blue border */
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .tip-card p {
+            font-size: 1.4rem;
+            font-style: italic;
+            color: #01579b; /* Dark blue */
+            margin: 0;
+        }
+    </style>
+    <div class="tip-card">
+        <p>{{ current_tip }}</p>
+    </div>
+    <p style="margin-top: 2rem;">Come back tomorrow for a new tip!</p>
+{% endblock %}

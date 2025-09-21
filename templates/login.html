@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Health - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green: #98c9a3;
+      --beige: #f7f3e9;
+      --blue: #b2d6e8;
+      --dark: #2e3e3e;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--beige);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: var(--white);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--green);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: var(--beige);
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: var(--green);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #7db68d;
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .register-link a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Login to Smart Health</h2>
+    <form method="POST" action="/login">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required />
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="register-link">
+      Don’t have an account? <a href="/register">Register here</a>
+    </div>
+  </div>
+
+</body>
+</html>

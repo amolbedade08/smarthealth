@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Emergency Contacts{% endblock %}
+
+{% block content %}
+    <h2>📞 Emergency Contacts</h2>
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Contact Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="relationship">Relationship (optional):</label>
+            <input type="text" id="relationship" name="relationship" placeholder="e.g., Parent, Spouse, Friend">
+        </div>
+        <div class="form-group">
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" placeholder="e.g., +11234567890" required>
+        </div>
+        <button type="submit" class="btn">Add Contact</button>
+    </form>
+
+    <div class="table-container">
+        <h3>Your Emergency Contacts</h3>
+        {% if contacts %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Relationship</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in contacts %}
+                        <tr>
+                            <td>{{ contact.name }}</td>
+                            <td>{{ contact.relationship if contact.relationship else 'N/A' }}</td>
+                            <td>{{ contact.phone_number }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No emergency contacts added yet.</p>
+        {% endif %}
+    </div>
+{% endblock %}

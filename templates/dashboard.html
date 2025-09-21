@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h2>🏠 Welcome to Your Smart Health Dashboard!</h2>
+    <p>Hello, User! Here's a quick overview of your health journey.</p>
+
+    <div class="dashboard-stats">
+       
+        <style>
+            .dashboard-stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1.5rem;
+                margin-top: 2rem;
+                text-align: center;
+            }
+            .stat-card {
+                background-color: #e8f5e9;
+                border: 1px solid #8C3C1f;
+                border-radius: 10px;
+                padding: 1.5rem;
+                text-align: center;
+                box-shadow: 0 5px 5px rgba(0,0,0,0.08);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            .stat-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+            .stat-card h4 {
+                color: #511b01;
+                margin-top: 0;
+                margin-bottom: 0.8rem;
+                font-size: 1.2rem;
+            }
+              .stat-card p {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: #b36b27; /* Changed to a softer, more optimal brown */
+                margin: 0;
+            }
+            .stat-card a {
+                display: block;
+                margin-top: 1rem;
+                color: #752d13;
+                text-decoration: none;
+                font-weight: 500;
+            }
+            .stat-card a:hover {
+                text-decoration: underline;
+            }
+        </style>
+
+        <div class="stat-card">
+            <h4>Medicines</h4>
+            <p>{{ medicine_count }}</p>
+            <a href="{{ url_for('medicine') }}">Manage Medicines</a>
+        </div>
+        <div class="stat-card">
+            <h4>Habits Tracked</h4>
+            <p>{{ habit_count }}</p>
+            <a href="{{ url_for('habits') }}">Manage Habits</a>
+        </div>
+        <div class="stat-card">
+            <h4>BMI Entries</h4>
+            <p>{{ bmi_count }}</p>
+            <a href="{{ url_for('bmi_calculator') }}">Track BMI</a>
+        </div>
+       
+        <div class="stat-card">
+            <h4>Exercise Logs</h4>
+            <p>{{ exercise_log_count }}</p>
+            <a href="{{ url_for('exercise_tracker') }}">Log Exercises</a>
+        </div>
+         <div class="stat-card">
+            <h4>Emergency Contacts</h4>
+            <p>{{ emergency_contact_count }}</p>
+            <a href="{{ url_for('emergency_contacts') }}">View Contacts</a>
+        </div>
+        <div class="stat-card">
+            <h4>Meals Planned</h4>
+            <p>{{ meal_plan_count }}</p>
+            <a href="{{ url_for('diet_planner') }}">Plan Meals</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Exercise Tracker{% endblock %}
+
+{% block content %}
+    <h2>🏃‍♀️ Exercise Tracker</h2>
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="log_date">Date:</label>
+            <input type="date" id="log_date" name="log_date" value="{{ today_date if today_date }}" required>
+        </div>
+        <div class="form-group">
+            <label for="activity_name">Activity Name:</label>
+            <input type="text" id="activity_name" name="activity_name" placeholder="e.g., Running, Yoga, Weightlifting" required>
+        </div>
+        <div class="form-group">
+            <label for="duration_minutes">Duration (minutes):</label>
+            <input type="number" id="duration_minutes" name="duration_minutes" min="1" required>
+        </div>
+        <div class="form-group">
+            <label for="calories_burned">Calories Burned (optional):</label>
+            <input type="number" id="calories_burned" name="calories_burned" step="0.1" placeholder="e.g., 300">
+        </div>
+        <button type="submit" class="btn">Log Exercise</button>
+    </form>
+
+    <div class="table-container">
+        <h3>Your Exercise Logs</h3>
+        <style>
+          .exercise-table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 2rem;
+          }
+          .exercise-table th, .exercise-table td {
+            padding: 1rem 1.2rem;
+            text-align: left;
+            font-size: 1rem;
+            border-bottom: 1px solid #ffffff;
+            word-break: break-word;
+            background: #000000;
+            color: #fff;
+          }
+          .exercise-table th {
+            background: #6e6e6e;
+            font-weight: 700;
+            font-size: 1.08rem;
+            border-bottom: 2px solid #343a40;
+            white-space: nowrap;
+          }
+          .exercise-table td:last-child {
+            white-space: nowrap;
+          }
+          @media (max-width: 900px) {
+            .exercise-table {
+              min-width: 0;
+              font-size: 0.95rem;
+            }
+            .exercise-table th, .exercise-table td {
+              padding: 0.7rem 0.5rem;
+            }
+          }
+        </style>
+        {% if exercise_logs %}
+            <table class="exercise-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Date</th>
+                        <th style="width: 35%;">Activity</th>
+                        <th style="width: 20%;">Duration (min)</th>
+                        <th style="width: 25%;">Calories Burned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in exercise_logs %}
+                        <tr>
+                            <td>{{ log.log_date.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ log.activity_name }}</td>
+                            <td>{{ log.duration_minutes }}</td>
+                            <td>{{ "%.1f"|format(log.calories_burned) if log.calories_burned else 'N/A' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No exercise logs recorded yet. Let's get moving!</p>
+        {% endif %}
+    </div>
+    <script>
+        // Set today's date as default for the date input
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months start at 0!
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('log_date').value = `${yyyy}-${mm}-${dd}`;
+        });
+    </script>
+{% endblock %}

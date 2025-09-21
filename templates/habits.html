@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Habits{% endblock %}
+
+{% block content %}
+<h2>🧘‍♀️ Habits Tracker</h2>
+<p>This page will allow you to add and track your healthy habits.</p>
+
+<!-- Habits Table -->
+<style>
+  .mark-taken-btn {
+    background: #a7f3d0;
+    border: none;
+    color: #065f46;
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    font-weight: 605;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .mark-taken-btn.taken {
+    background: #d1fae5;
+  }
+  .remove-btn {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .habits-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 2rem;
+  }
+  .habits-table th, .habits-table td {
+    padding: 1rem 1.2rem;
+    text-align: left;
+    font-size: 1rem;
+    border-bottom: 1px solid #ffffff;
+    word-break: break-word;
+    background: #000000;
+    color: #fff;
+  }
+  .habits-table th {
+    background: #575757;
+    font-weight: 700;
+    font-size: 1.08rem;
+    border-bottom: 2px solid #343a40;
+    white-space: nowrap;
+  }
+  .habits-table td:last-child {
+    white-space: nowrap;
+  }
+  @media (max-width: 900px) {
+    .habits-table {
+      min-width: 0;
+      font-size: 0.95rem;
+    }
+    .habits-table th, .habits-table td {
+      padding: 0.7rem 0.5rem;
+    }
+  }
+</style>
+<table class="habits-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Habit Name</th>
+      <th style="width: 20%;">Frequency</th>
+      <th style="width: 35%;">Notes</th>
+      <th style="width: 20%;">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for habit in habits %}
+      <tr>
+        <td>{{ habit.habit_name }}</td>
+        <td>{{ habit.frequency }}</td>
+        <td>{{ habit.notes }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('mark_habit_done', habit_id=habit.id) }}" style="display:inline;">
+            <button type="submit" class="mark-taken-btn{% if habit.done %} taken{% endif %}">
+              {% if habit.done %}
+                ✅ Done
+              {% else %}
+                Mark Done
+              {% endif %}
+            </button>
+          </form>
+          <form method="POST" action="{{ url_for('remove_habit', habit_id=habit.id) }}" style="display:inline;">
+            <button type="submit" class="remove-btn">Remove</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Example form for adding a habit -->
+<h3>Add New Habit</h3>
+<form method="POST" action="{{ url_for('habits') }}">
+  <div class="form-group">
+    <label for="habit_name">Habit Name:</label>
+    <input type="text" id="habit_name" name="habit_name" required>
+  </div>
+  <div class="form-group">
+    <label for="frequency">Frequency:</label>
+    <input type="text" id="frequency" name="frequency">
+  </div>
+  <div class="form-group">
+    <label for="notes">Notes:</label>
+    <input type="text" id="notes" name="notes">
+  </div>
+  <button type="submit" class="btn">Add Habit</button>
+</form>
+{% endblock %}

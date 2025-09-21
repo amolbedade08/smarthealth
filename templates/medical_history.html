@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Medical History{% endblock %}
+
+{% block content %}
+<h2>Medical History</h2>
+
+<style>
+input[type="date"], textarea, input[type="file"] {
+  background-color: #1c1c28;
+  color: #ffffff;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 0.6rem;
+  font-size: 1rem;
+  width: 100%;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+.btn {
+  padding: 0.6rem 1rem;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.remove-btn {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-weight: 600;
+}
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+th, td {
+  padding: 0.75rem 1.5rem;
+  text-align: left;
+}
+th {
+  background: #1c1c28;
+  color: #4caf50;
+  font-size: 1.1rem;
+}
+td {
+  background: #232336;
+  color: #fff;
+  font-size: 1rem;
+  vertical-align: top;
+}
+.record-img {
+  max-width: 150px;
+  display: block;
+  margin-top: 5px;
+  border-radius: 6px;
+}
+</style>
+
+<form method="POST" action="{{ url_for('medical_history') }}" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="condition">Condition / Notes</label>
+    <textarea id="condition" name="condition" placeholder="Describe your condition or medical note" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="date">Date</label>
+    <input type="date" name="date" required>
+  </div>
+  <div class="form-group">
+    <label for="document">Upload Document / Image</label>
+    <input type="file" id="document" name="document" accept="image/*,.pdf,.doc,.docx" />
+  </div>
+  <button type="submit" class="btn">Add Record</button>
+</form>
+
+<hr>
+
+<table>
+  <thead>
+    <tr>
+      <th>Condition</th>
+      <th>Date</th>
+      <th>Description / Document</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in histories %}
+      <tr>
+              <td>{{ record.condition }}</td>
+              <td>{{ record.diagnosis_date.strftime('%Y-%m-%d') if record.diagnosis_date else '' }}</td>
+              <td>
+                {{ record.notes }}
+                {% if record.document_filename %}
+                  <br>
+                  <a href="{{ url_for('uploaded_file', filename=record.document_filename) }}" target="_blank">View File</a>
+                  {% if record.document_filename.endswith(('.png', '.jpg', '.jpeg', '.gif')) %}
+                    <img src="{{ url_for('uploaded_file', filename=record.document_filename) }}" class="record-img" />
+                  {% endif %}
+                {% endif %}
+              </td>
+
+        <td>
+          <form method="POST" action="{{ url_for('remove_record', record_id=record.id) }}">
+            <button type="submit" class="remove-btn">Remove</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

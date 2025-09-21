@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Health - Sidebar Example</title>
+  <style>
+    :root {
+      --sage-green: #9caf88;
+      --beige: #f5f1e9;
+      --soft-blue: #7a9cc6;
+      --text-color: #333;
+      --sidebar-bg: var(--sage-green);
+      --sidebar-text: #fff;
+      --sidebar-hover: #7a9f73;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--beige);
+      color: var(--text-color);
+      display: flex;
+    }
+
+    /* Sidebar */
+    nav.sidebar {
+      height: 100vh;
+      width: 240px;
+      background-color: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      padding-top: 1rem;
+      z-index: 1000;
+    }
+
+    .sidebar-header {
+      padding: 1rem 2rem;
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    ul.sidebar-menu {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    ul.sidebar-menu li {
+      margin: 0;
+    }
+
+    ul.sidebar-menu li a {
+      display: block;
+      padding: 1rem 2rem;
+      color: var(--sidebar-text);
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    ul.sidebar-menu li a:hover,
+    ul.sidebar-menu li a.active {
+      background-color: var(--sidebar-hover);
+    }
+
+    /* Main content */
+    main.content {
+      margin-left: 240px; /* same as sidebar width */
+      padding: 2rem;
+      flex-grow: 1;
+      min-height: 100vh;
+    }
+
+    main.content h1 {
+      color: var(--soft-blue);
+      margin-top: 0;
+    }
+
+    /* Example button style */
+    button {
+      background-color: var(--soft-blue);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5d7a9d;
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="sidebar-header">Smart Health</div>
+    <ul class="sidebar-menu">
+      <li><a href="/templates/dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="/templates/medical_history.html">Medical History</a></li>
+      <li><a href="/templates/medicines.html">Medicine</a></li>
+      <li><a href="/templates/habits.html">Habits</a></li>
+      <li><a href="/templates/reminder.html">Reminders</a></li>
+      <li><a href="/templates/planner.html">Planner</a></li>
+      <li><a href="/templates/analytics.html">Analytics</a></li>
+      <li><a href="/templates/upload.html">Upload Docs</a></li>
+      <li><a href="/templates/login.html">Logout</a></li>
+    </ul>
+  </nav>
+
+  <main class="content">
+    <h1>Dashboard</h1>
+    <p>Welcome to Smart Health! Use the sidebar to navigate through your medical records, habits, reminders, and more.</p>
+    <button>Example Action</button>
+  </main>
+</body>
+
+</html>

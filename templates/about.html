@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<style>
+  .about-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+  }
+  .about-container h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #811818e2;
+  }
+  .about-container p {
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    color: #ffcda4;
+  }
+  .team {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+  }
+  .team-member {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 250px;
+    transition: transform 0.2s;
+  }
+  .team-member:hover {
+    transform: translateY(-5px);
+  }
+  .team-member img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    object-fit: cover;
+  }
+  .team-member h3 {
+    margin: 10px 0 5px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  .team-member p {
+    font-size: 0.95rem;
+    color: #666;
+  }
+</style>
+
+<section class="about-container">
+  <h1>About Us</h1>
+  <p>We designed and built Smart Health to help users manage their medical history , routines & Habits</p>
+  
+  <div class="team">
+    <div class="team-member">
+      <img src="{{ url_for('static', filename='myphoto.jpg') }}" alt="Amol Bedade">
+      <h3>Amol Bedade</h3>
+      <p>Database & Integration </p>
+    </div>
+    <div class="team-member">
+      <img src="{{ url_for('static', filename='v.jpeg') }}" alt="Vishwesh Bonde">
+      <h3>Vishwesh Bonde</h3>
+      <p>Frontend & Backend Developer</p>
+    </div>
+    <div class="team-member">
+      <img src="{{ url_for('static', filename='s.jpg') }}" alt="Srushti Bohara">
+      <h3>Srushti Bohara</h3>
+      <p>UI/UX Designer</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

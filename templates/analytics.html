@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<h2>User Progress Overview</h2>
+
+<div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+  <div>
+    <h3>Progress Pie Chart</h3>
+    <canvas id="progressPie" width="300" height="300"></canvas>
+  </div>
+  <div>
+    <h3>Progress Bar Chart</h3>
+    <canvas id="progressBar" width="400" height="200"></canvas>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const pieData = {
+  labels: ['Completed', 'Not Completed', 'Unrealized'],
+  datasets: [{
+    data: [
+      {{ completed|default(0) }},
+      {{ not_completed|default(0) }},
+      {{ unrealized|default(0) }}
+    ],
+    backgroundColor: ['#22c55e', '#f87171', '#fbbf24'],
+  }]
+};
+
+new Chart(document.getElementById('progressPie'), {
+  type: 'pie',
+  data: pieData,
+  options: { responsive: true }
+});
+
+const barData = {
+  labels: ['Completed', 'Not Completed', 'Unrealized'],
+  datasets: [{
+    label: 'Points',
+    data: [
+      {{ completed|default(0) }},
+      {{ not_completed|default(0) }},
+      {{ unrealized|default(0) }}
+    ],
+    backgroundColor: ['#22c55e', '#f87171', '#fbbf24'],
+  }]
+};
+
+new Chart(document.getElementById('progressBar'), {
+  type: 'bar',
+  data: barData,
+  options: { responsive: true }
+});
+</script>
+{% endblock %}
